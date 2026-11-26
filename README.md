@@ -3,6 +3,7 @@
 Single-pass installer and update-recovery manager for Antigravity sidebar extensions (`fast-switch`, `mcp-panel`, `context-panel`).
 
 ## Features
+- **One-line install** (`irm ... | iex`) — works even without Git installed.
 - Applies any combination of modules in a single `app.asar` repack pass (no repeated backups or broken markers).
 - Preserves `antigravity-ascii-wallpapers` automatically if installed.
 - Tracks active modules and `app.asar` SHA-256 in `~/.gemini/antigravity/mod-manager.json` so you can re-apply everything in one command after Antigravity auto-updates.
@@ -17,9 +18,20 @@ Single-pass installer and update-recovery manager for Antigravity sidebar extens
 - Windows 10/11
 - Python 3
 - Node.js (`node --check`)
-- Git (for fetching module repos if not already present locally)
 
-## Usage
+## One-Line Install (Recommended)
+Run in an external PowerShell window (outside Antigravity, because patching restarts the IDE):
+```powershell
+irm https://raw.githubusercontent.com/Parfnx/antigravity-mod-manager/main/install.ps1 | iex
+```
+
+Install only specific modules:
+```powershell
+$env:AGY_MODS = "fast-switch,mcp-panel"
+irm https://raw.githubusercontent.com/Parfnx/antigravity-mod-manager/main/install.ps1 | iex
+```
+
+## Manual Install / Local CLI
 ```powershell
 git clone https://github.com/Parfnx/antigravity-mod-manager.git
 cd antigravity-mod-manager

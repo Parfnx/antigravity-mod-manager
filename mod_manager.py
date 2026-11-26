@@ -4,12 +4,16 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import io
 import json
 import os
 import re
+import shutil
 import struct
 import subprocess
 import sys
+import urllib.request
+import zipfile
 from typing import Any
 
 RESOURCES_DIR = os.path.join(os.environ.get("LOCALAPPDATA", ""), "Programs", "antigravity", "resources")
@@ -179,6 +183,26 @@ def ensure_fast_switch_hook(main_text: str) -> str:
     )
 
 
+def download_module_zip(repo_url: str, dest_dir: str) -> None:
+    zip_url = repo_url.removesuffix(".git").rstrip("/") + "/archive/refs/heads/main.zip"
+    req = urllib.request.Request(zip_url, headers={"User-Agent": "AntigravityModManager/1.0"})
+    with urllib.request.urlopen(req, timeout=30) as resp:
+        data = resp.read()
+    tmp_dir = dest_dir + ".tmp"
+    if os.path.exists(tmp_dir):
+        shutil.rmtree(tmp_dir)
+    os.makedirs(tmp_dir, exist_ok=True)
+    with zipfile.ZipFile(io.BytesIO(data)) as zf:
+        zf.extractall(tmp_dir)
+    entries = [os.path.join(tmp_dir, e) for e in os.listdir(tmp_dir)]
+    root_dir = entries[0] if len(entries) == 1 and os.path.isdir(entries[0]) else tmp_dir
+    if os.path.exists(dest_dir):
+        shutil.rmtree(dest_dir)
+    shutil.move(root_dir, dest_dir)
+    if os.path.exists(tmp_dir):
+        shutil.rmtree(tmp_dir, ignore_errors=True)
+
+
 def resolve_module_dir(mod_id: str, offline: bool = False) -> str:
     meta = MODULES[mod_id]
     sibling = os.path.join(SCRATCH_ROOT, meta["dir"])
@@ -187,13 +211,23 @@ def resolve_module_dir(mod_id: str, offline: bool = False) -> str:
 
     os.makedirs(DEFAULT_MODS_CACHE, exist_ok=True)
     cached = os.path.join(DEFAULT_MODS_CACHE, meta["dir"])
-    if os.path.isdir(os.path.join(cached, ".git")):
+    has_git = shutil.which("git") is not None
+    has_files = os.path.isfile(os.path.join(cached, "main_patch.js")) and os.path.isfile(os.path.join(cached, "preload_patch.js"))
+
+    if os.path.isdir(os.path.join(cached, ".git")) and has_git:
         if not offline:
             subprocess.run(["git", "-C", cached, "pull", "--ff-only"], check=False)
         return cached
+    if has_files:
+        if not offline:
+            download_module_zip(meta["repo"], cached)
+        return cached
     if offline:
         raise RuntimeError(f"Module '{mod_id}' not found locally and --offline is set")
-    subprocess.run(["git", "clone", "--depth", "1", meta["repo"], cached], check=True)
+    if has_git:
+        subprocess.run(["git", "clone", "--depth", "1", meta["repo"], cached], check=True)
+    else:
+        download_module_zip(meta["repo"], cached)
     return cached
 
 
