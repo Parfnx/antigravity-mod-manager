@@ -44,6 +44,20 @@ MODULES: dict[str, dict[str, str]] = {
         "end": "// END LOCAL CONTEXT PANEL",
         "label": "Context & Memory Panel (Memories, Rules, Skills)",
     },
+    "runtime-panel": {
+        "repo": "https://github.com/Parfnx/antigravity-runtime-panel.git",
+        "dir": "antigravity-runtime-panel",
+        "start": "// BEGIN LOCAL RUNTIME PANEL",
+        "end": "// END LOCAL RUNTIME PANEL",
+        "label": "Runtime Panel (Terminals, Sidecars, Tasks)",
+    },
+    "sessions-panel": {
+        "repo": "https://github.com/Parfnx/antigravity-sessions-panel.git",
+        "dir": "antigravity-sessions-panel",
+        "start": "// BEGIN LOCAL SESSIONS PANEL",
+        "end": "// END LOCAL SESSIONS PANEL",
+        "label": "Sessions Panel (Markdown Export & Cleanup)",
+    },
 }
 
 ASCII_MARKER = "// BEGIN LOCAL ASCII WALLPAPERS"

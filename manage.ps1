@@ -1,7 +1,7 @@
 param(
     [ValidateSet('menu', 'status', 'apply', 'reapply', 'restore')]
     [string]$Action = 'menu',
-    [string]$Mods = 'fast-switch,mcp-panel,context-panel',
+    [string]$Mods = 'fast-switch,mcp-panel,context-panel,runtime-panel,sessions-panel',
     [switch]$Offline
 )
 
@@ -31,7 +31,7 @@ function Commit-Staged {
 if ($Action -eq 'menu') {
     python $py status
     Write-Host ''
-    Write-Host '[1] Apply all (fast-switch + mcp-panel + context-panel)'
+    Write-Host '[1] Apply all (fast-switch + mcp-panel + context-panel + runtime-panel + sessions-panel)'
     Write-Host '[2] Re-apply saved modules (after Antigravity update)'
     Write-Host '[3] Custom module list'
     Write-Host '[4] Restore backup app.asar'
@@ -40,7 +40,7 @@ if ($Action -eq 'menu') {
         '1' { $Action = 'apply' }
         '2' { $Action = 'reapply' }
         '3' {
-            $Mods = Read-Host 'Comma-separated (fast-switch,mcp-panel,context-panel)'
+            $Mods = Read-Host 'Comma-separated (fast-switch,mcp-panel,context-panel,runtime-panel,sessions-panel)'
             $Action = 'apply'
         }
         '4' { $Action = 'restore' }

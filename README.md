@@ -1,6 +1,6 @@
 # Antigravity Mod Manager (Unified Patcher)
 
-Single-pass installer and update-recovery manager for Antigravity sidebar extensions (`fast-switch`, `mcp-panel`, `context-panel`).
+Single-pass installer and update-recovery manager for Antigravity sidebar extensions (`fast-switch`, `mcp-panel`, `context-panel`, `runtime-panel`, `sessions-panel`).
 
 ## Features
 - **One-line install** (`irm ... | iex`) — works even without Git installed.
@@ -13,6 +13,8 @@ Single-pass installer and update-recovery manager for Antigravity sidebar extens
 - `fast-switch` — Google account switcher ([antigravity-fast-switch](https://github.com/Parfnx/antigravity-fast-switch))
 - `mcp-panel` — Active MCP servers monitor & toggle ([antigravity-mcp-panel](https://github.com/Parfnx/antigravity-mcp-panel))
 - `context-panel` — Cascade memories, rules, skills, and workflows manager ([antigravity-context-panel](https://github.com/Parfnx/antigravity-context-panel))
+- `runtime-panel` — Live terminals, sidecars, and background tasks monitor ([antigravity-runtime-panel](https://github.com/Parfnx/antigravity-runtime-panel))
+- `sessions-panel` — Conversation search, Markdown exporter, and cleanup ([antigravity-sessions-panel](https://github.com/Parfnx/antigravity-sessions-panel))
 
 ## Requirements
 - Windows 10/11
@@ -27,7 +29,7 @@ irm https://raw.githubusercontent.com/Parfnx/antigravity-mod-manager/main/instal
 
 Install only specific modules:
 ```powershell
-$env:AGY_MODS = "fast-switch,mcp-panel"
+$env:AGY_MODS = "fast-switch,mcp-panel,runtime-panel"
 irm https://raw.githubusercontent.com/Parfnx/antigravity-mod-manager/main/install.ps1 | iex
 ```
 
@@ -44,7 +46,7 @@ powershell -ExecutionPolicy Bypass -File .\manage.ps1
 python .\mod_manager.py status
 
 # Apply all modules
-powershell -ExecutionPolicy Bypass -File .\manage.ps1 -Action apply -Mods fast-switch,mcp-panel,context-panel
+powershell -ExecutionPolicy Bypass -File .\manage.ps1 -Action apply -Mods fast-switch,mcp-panel,context-panel,runtime-panel,sessions-panel
 
 # Re-apply saved profile after an Antigravity update
 powershell -ExecutionPolicy Bypass -File .\manage.ps1 -Action reapply

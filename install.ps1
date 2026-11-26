@@ -33,7 +33,7 @@ try {
 }
 
 $action = if ($env:AGY_ACTION) { $env:AGY_ACTION } else { 'apply' }
-$mods = if ($env:AGY_MODS) { $env:AGY_MODS } else { 'fast-switch,mcp-panel,context-panel' }
+$mods = if ($env:AGY_MODS) { $env:AGY_MODS } else { 'fast-switch,mcp-panel,context-panel,runtime-panel,sessions-panel' }
 
 $manageScript = Join-Path $installDir 'manage.ps1'
 Write-Host "Running $manageScript ($action)..."
